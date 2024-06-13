@@ -16,6 +16,8 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+
 export const userControllers = {
   createUser,
+  
 };
