@@ -3,10 +3,7 @@ import sendResponse from '../../utils/sendResponse';
 import catchAsync from '../../utils/catchAsync';
 import { RoomService } from './room.service';
 
-
 const createRoom = catchAsync(async (req, res) => {
-  
-
   const result = await RoomService.crateRoomInDb(req.body);
 
   sendResponse(res, {
@@ -18,44 +15,43 @@ const createRoom = catchAsync(async (req, res) => {
 });
 
 const getSingleRoom = catchAsync(async (req, res) => {
-    const id = req.params.id  ;
-  
-    const result = await RoomService.getSingleRoomFromDb(id);
-  
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'single room fetched  successfully',
-      data: result,
-    });
+  const id = req.params.id;
+
+  const result = await RoomService.getSingleRoomFromDb(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'single room fetched  successfully',
+    data: result,
   });
+});
 const getAllRoom = catchAsync(async (req, res) => {
+  const result = await RoomService.getAllRoomFromDb();
 
-    const result = await RoomService.getAllRoomFromDb();
-  
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'All room fetched  successfully',
-      data: result,
-    });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All room fetched  successfully',
+    data: result,
   });
+});
 const deleteRoom = catchAsync(async (req, res) => {
-    const id = req.params.id  ;
+  const id = req.params.id;
 
-    const result = await RoomService.deleteRoomFromDb(id);
-  
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Room deleted successfully',
-      data: result,
-    });
+  const result = await RoomService.deleteRoomFromDb(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Room deleted successfully',
+    data: result,
   });
+});
 
 export const roomControllers = {
   createRoom,
   getSingleRoom,
   getAllRoom,
-  deleteRoom
+  deleteRoom,
 };

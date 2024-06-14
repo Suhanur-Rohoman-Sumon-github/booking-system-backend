@@ -9,7 +9,7 @@ const userSchema = new Schema<TUser>(
     name: {
       type: String,
       required: true,
-      trim:true
+      trim: true,
     },
     id: {
       type: String,
@@ -17,7 +17,7 @@ const userSchema = new Schema<TUser>(
     email: {
       type: String,
       required: true,
-      unique:true,
+      unique: true,
     },
     address: {
       type: String,
