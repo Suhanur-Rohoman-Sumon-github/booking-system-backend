@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 // Application routers
-app.use('/api/auth', router);
+app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
   const i = 44;

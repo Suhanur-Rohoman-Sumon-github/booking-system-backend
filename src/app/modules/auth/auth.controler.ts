@@ -4,13 +4,15 @@ import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.service';
 
 const loginUser = catchAsync(async (req, res) => {
-  const result = await AuthServices.loginUser(req.body);
+  const {accessToken,isUserExists} = await AuthServices.loginUser(req.body);
+  
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'user login successfully',
-    data: result,
+    token:accessToken ,
+    data:isUserExists
   });
 });
 

@@ -13,6 +13,10 @@ const getAllRoomFromDb = async () => {
   const result = await roomModel.find();
   return result;
 };
+const updateRoomFromDb = async () => {
+  const result = await roomModel.find();
+  return result;
+};
 const deleteRoomFromDb = async (id: string) => {
   const result = await roomModel.findByIdAndUpdate(
     id,
@@ -26,5 +30,6 @@ export const RoomService = {
   crateRoomInDb,
   getSingleRoomFromDb,
   getAllRoomFromDb,
+  updateRoomFromDb,
   deleteRoomFromDb,
 };
