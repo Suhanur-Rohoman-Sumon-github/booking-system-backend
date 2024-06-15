@@ -22,14 +22,11 @@ router.post(
   AuthControllers.loginUser,
 );
 
-
 // Admin creation route
 router.post(
   '/create-admin',
   validateRequest(adminValidation.createAdminValidationSchema),
   userControllers.createAdmin,
 );
-
-
 
 export const UserRoute = router;

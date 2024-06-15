@@ -4,7 +4,6 @@ import catchAsync from '../../utils/catchAsync';
 import { RoomService } from './room.service';
 
 const createRoom = catchAsync(async (req, res) => {
-  
   const result = await RoomService.crateRoomInDb(req.body);
 
   sendResponse(res, {
@@ -17,7 +16,7 @@ const createRoom = catchAsync(async (req, res) => {
 
 const getSingleRoom = catchAsync(async (req, res) => {
   const id = req.params.id;
-  
+
   const result = await RoomService.getSingleRoomFromDb(id);
 
   sendResponse(res, {
@@ -38,7 +37,8 @@ const getAllRoom = catchAsync(async (req, res) => {
   });
 });
 const updateRoom = catchAsync(async (req, res) => {
-  const result = await RoomService.getAllRoomFromDb();
+  const { id } = req.params;
+  const result = await RoomService.updateRoomFromDb(id, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

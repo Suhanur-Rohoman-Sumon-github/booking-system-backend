@@ -18,10 +18,10 @@ router.post(
 
 router.get('/', Auth(User_Role.admin), roomControllers.getAllRoom);
 
-router.get('/:id',Auth(User_Role.admin), roomControllers.getSingleRoom);
+router.get('/:id', Auth(User_Role.admin), roomControllers.getSingleRoom);
 
 router.patch('/:id',Auth(User_Role.admin), roomControllers.updateRoom);
 
-router.delete('/:id',Auth(User_Role.admin), roomControllers.deleteRoom);
+router.delete('/:id', Auth(User_Role.admin), roomControllers.deleteRoom);
 
 export const RoomRouter = router;

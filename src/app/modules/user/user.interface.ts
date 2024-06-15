@@ -21,5 +21,4 @@ export interface UserModels extends Model<TUser> {
   ): Promise<TUser | null>;
 }
 
-
-export type TUserRol = keyof typeof User_Role
+export type TUserRol = keyof typeof User_Role;

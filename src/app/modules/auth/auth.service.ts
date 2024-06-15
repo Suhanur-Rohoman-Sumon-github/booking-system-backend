@@ -28,18 +28,15 @@ const loginUser = async (payload: TLoginUser) => {
   const jwtPayload = {
     userId: isUserExists.id,
     userRole: isUserExists.role,
-    
   };
 
-  const accessToken = jwt.sign(
-    jwtPayload,
-    config.access_secret_key as string,
-    { expiresIn: '10d' },
-  );
+  const accessToken = jwt.sign(jwtPayload, config.access_secret_key as string, {
+    expiresIn: '10d',
+  });
 
   return {
     accessToken,
-    isUserExists
+    isUserExists,
   };
 };
 export const AuthServices = {

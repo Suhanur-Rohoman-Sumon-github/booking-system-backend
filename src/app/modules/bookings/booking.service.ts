@@ -5,6 +5,8 @@ import { TBooking } from './booking.interface';
 import { bookingModel } from './booking.model';
 import AppError from '../../error/AppError';
 import httpStatus from 'http-status';
+import { userModel } from '../user/user.model';
+
 
 const crateBookingInDb = async (payload: Partial<TBooking>) => {
   const { date, slots, room, user } = payload;
@@ -62,7 +64,37 @@ const crateBookingInDb = async (payload: Partial<TBooking>) => {
     throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'error to create');
   }
 };
+const getAllBookingFromDb = async () => {
+  const result = await bookingModel.find();
+  return result;
+};
+const getMyBookings = async (customUserId:string) => {
+  const user = await userModel.findOne({ id:customUserId }).exec();
 
+  if(!user){
+    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR,"no user found")
+  }
+
+  const bookings = await bookingModel
+    .find({ user: user._id }) 
+    .populate('user')
+    .exec();
+
+ return bookings
+};
+const updateBookingInDb = async (id:string,payload:Partial<TBooking>) => {
+  console.log(id);
+  console.log(payload);
+  const updatedBooking = await bookingModel.findByIdAndUpdate(
+    id,
+    { $set: payload }, 
+    { new: true } 
+  )
+return updatedBooking
+};
 export const bookingService = {
   crateBookingInDb,
+  getAllBookingFromDb,
+  getMyBookings,
+  updateBookingInDb
 };
