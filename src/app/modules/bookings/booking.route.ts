@@ -5,10 +5,13 @@ import Auth from '../../middleware/auth';
 
 const router = express.Router();
 
-
-router.post('/',Auth(User_Role.admin || User_Role.user ), bookingsControllers.createBookings);
-router.get('/',Auth(User_Role.admin ), bookingsControllers.getAllBookings);
-router.patch('/:id',Auth(User_Role.admin ), bookingsControllers.updateBooking);
-
+router.post(
+  '/',
+  Auth(User_Role.admin || User_Role.user),
+  bookingsControllers.createBookings,
+);
+router.get('/', Auth(User_Role.admin), bookingsControllers.getAllBookings);
+router.patch('/:id', Auth(User_Role.admin), bookingsControllers.updateBooking);
+router.delete('/:id', Auth(User_Role.admin), bookingsControllers.deleteBooking);
 
 export const BookingRoute = router;

@@ -7,7 +7,6 @@ import AppError from '../../error/AppError';
 import httpStatus from 'http-status';
 import { userModel } from '../user/user.model';
 
-
 const crateBookingInDb = async (payload: Partial<TBooking>) => {
   const { date, slots, room, user } = payload;
 
@@ -65,36 +64,56 @@ const crateBookingInDb = async (payload: Partial<TBooking>) => {
   }
 };
 const getAllBookingFromDb = async () => {
-  const result = await bookingModel.find();
+  const result = await bookingModel
+    .find()
+    .populate('slots')
+    .populate('room')
+    .populate('user');
   return result;
 };
-const getMyBookings = async (customUserId:string) => {
-  const user = await userModel.findOne({ id:customUserId }).exec();
+const getMyBookings = async (customUserId: string) => {
+  const user = await userModel.findOne({ id: customUserId }).exec();
 
-  if(!user){
-    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR,"no user found")
+  if (!user) {
+    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'no user found');
   }
-
   const bookings = await bookingModel
-    .find({ user: user._id }) 
+    .find({ user: user._id })
     .populate('user')
     .exec();
 
- return bookings
+  if (!bookings) {
+    // Handle case where no data is found
+    return {
+      success: false,
+      statusCode: httpStatus.NOT_FOUND,
+      message: 'No Data Found',
+      data: [],
+    };
+  }
+
+  return bookings;
 };
-const updateBookingInDb = async (id:string,payload:Partial<TBooking>) => {
-  console.log(id);
-  console.log(payload);
+const updateBookingInDb = async (id: string, payload: Partial<TBooking>) => {
   const updatedBooking = await bookingModel.findByIdAndUpdate(
     id,
-    { $set: payload }, 
-    { new: true } 
-  )
-return updatedBooking
+    { $set: payload },
+    { new: true },
+  );
+  return updatedBooking;
+};
+const deleteBookingInDb = async (id: string) => {
+  const updatedBooking = await bookingModel.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
+  return updatedBooking;
 };
 export const bookingService = {
   crateBookingInDb,
   getAllBookingFromDb,
   getMyBookings,
-  updateBookingInDb
+  updateBookingInDb,
+  deleteBookingInDb,
 };

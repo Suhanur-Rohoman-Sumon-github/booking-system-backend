@@ -6,7 +6,7 @@ import { User_Role } from '../user/user.const';
 const router = express.Router();
 
 // Correct path setup, assuming you want to handle the user creation at '/signup'
-router.post('/',Auth(User_Role.admin), slotsControllers.createSlot);
-router.get('/availability',Auth(User_Role.admin), slotsControllers.getSlots);
+router.post('/', Auth(User_Role.admin), slotsControllers.createSlot);
+router.get('/availability', Auth(User_Role.admin), slotsControllers.getSlots);
 
 export const SlotRoute = router;

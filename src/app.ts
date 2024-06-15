@@ -14,8 +14,8 @@ app.use(cors());
 app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
-  const i = 44;
-  res.send(`server  is ${i}`);
+  
+  res.send(`server  is building`);
 });
 
 // handle 404 route

@@ -5,7 +5,10 @@ import Auth from '../../middleware/auth';
 
 const router = express.Router();
 
-
-router.get('/',Auth(User_Role.admin || User_Role.user ), bookingsControllers.getMyBookings);
+router.get(
+  '/',
+  Auth(User_Role.admin || User_Role.user),
+  bookingsControllers.getMyBookings,
+);
 
 export const BookingRoute2 = router;

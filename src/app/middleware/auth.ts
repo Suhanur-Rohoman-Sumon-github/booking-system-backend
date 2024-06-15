@@ -38,10 +38,11 @@ const Auth = (...requiredRoles: TUserRol[]) => {
           requiredRoles &&
           !requiredRoles.includes((decoded as JwtPayload).userRole)
         ) {
-          throw new AppError(
-            httpStatus.UNAUTHORIZED,
-            'unauthorized access detected',
-          );
+          return res.status(401).json({
+            success: false,
+            statusCode: 401,
+            message: 'You have no access to this route',
+          });
         }
         req.user = decoded as JwtPayload;
         next();

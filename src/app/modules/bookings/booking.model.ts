@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { TBooking } from './booking.interface';
+import httpStatus from 'http-status';
+import AppError from '../../error/AppError';
 
 const bookingSchema = new Schema<TBooking>(
   {
@@ -42,5 +44,18 @@ const bookingSchema = new Schema<TBooking>(
     timestamps: true,
   },
 );
+
+bookingSchema.pre('find', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+bookingSchema.post<TBooking>('find', function (docs, next) {
+  if (!docs || docs.length === 0) {
+    const error = new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+    next(error);
+  }
+  next();
+});
 
 export const bookingModel = model<TBooking>('Booking', bookingSchema);

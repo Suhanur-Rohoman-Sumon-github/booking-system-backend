@@ -2,12 +2,10 @@ import { Request, Response } from 'express';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const notFoundRoute = (req: Request, res: Response) => {
-  const statusCode = 400;
-  const massage = 'route not found';
-  return res.status(statusCode).json({
+  return res.status(404).json({
     success: false,
-    massage,
-    error: '',
+    statusCode: 404,
+    message: 'Route Not Found',
   });
 };
 
