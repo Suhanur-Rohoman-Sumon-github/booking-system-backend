@@ -13,54 +13,51 @@ const createStudentIntoDB = async (payload: TUser) => {
   const result = userModel.create(newUser);
   return result;
 };
-const createAdminIntoDB = async (
-  payload: TAdmin,
-) => {
+const createAdminIntoDB = async (payload: TAdmin) => {
   // create a user object
-  const userData: Partial<TAdmin> = payload
-  
+  const userData: Partial<TAdmin> = payload;
 
   //set student role
-  userData.role = 'admin'
-  
-  const session = await mongoose.startSession()
+  userData.role = 'admin';
+
+  const session = await mongoose.startSession();
 
   try {
-    session.startTransaction()
+    session.startTransaction();
     //set  generated id
-    userData.id = await generateAdminId()
-   
+    userData.id = await generateAdminId();
+
     // create a user (transaction-1)
-    const newUser = await userModel.create([userData], { session })
-   
+    const newUser = await userModel.create([userData], { session });
+
     //create a admin
     if (!newUser.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin')
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
     }
     // set id , _id as user
-    payload.id = newUser[0].id
-    payload.user = newUser[0]._id //reference _id
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id; //reference _id
 
     // create a admin (transaction-2)
-    const newAdmin = await adminModel.create([payload], { session })
+    const newAdmin = await adminModel.create([payload], { session });
 
     if (!newAdmin.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin')
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
     }
 
-    await session.commitTransaction()
-    await session.endSession()
+    await session.commitTransaction();
+    await session.endSession();
 
-    return newAdmin
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return newAdmin;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    await session.abortTransaction()
-    await session.endSession()
-    throw new Error(err)
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
   }
-}
+};
 
 export const UserServices = {
   createStudentIntoDB,
-  createAdminIntoDB
+  createAdminIntoDB,
 };

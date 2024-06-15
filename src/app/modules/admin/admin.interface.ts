@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export type TAdmin = {
-    name: string;
+  name: string;
   id: string;
   email: string;
   password: string;
   phone: number;
   address: string;
-  role: 'admin' ;
-  user : mongoose.Types.ObjectId
-}
+  role: 'admin';
+  user: mongoose.Types.ObjectId;
+};

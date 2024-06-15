@@ -34,7 +34,7 @@ const adminSchema = new Schema<TAdmin>(
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref:"user"
+      ref: 'user',
     },
   },
   {

@@ -39,7 +39,7 @@ const crateBookingInDb = async (payload: Partial<TBooking>) => {
       ],
       { session },
     );
-    
+
     // Populate the created booking with references
     const populatedResult = await bookingModel
       .findById(createdBooking[0]._id)

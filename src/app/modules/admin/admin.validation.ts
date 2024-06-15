@@ -7,7 +7,7 @@ const createAdminValidationSchema = z.object({
     address: z.string(),
     phone: z.number(),
     password: z.string(),
-    id:z.string().optional()
+    id: z.string().optional(),
   }),
 });
 
