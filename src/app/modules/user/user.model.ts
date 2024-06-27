@@ -24,7 +24,7 @@ const userSchema = new Schema<TUser, UserModels>(
       required: true,
     },
     phone: {
-      type: Number,
+      type: String,
       required: true,
     },
     role: {

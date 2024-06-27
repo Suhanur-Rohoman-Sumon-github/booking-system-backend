@@ -51,7 +51,7 @@ bookingSchema.pre('find', async function (next) {
 });
 
 bookingSchema.post<TBooking>('find', function (docs, next) {
-  if (!docs || docs.length === 0) {
+  if (!docs) {
     const error = new AppError(httpStatus.NOT_FOUND, 'No Data Found');
     next(error);
   }

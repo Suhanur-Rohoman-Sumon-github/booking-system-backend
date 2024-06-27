@@ -10,7 +10,7 @@ const router = express.Router();
 
 // Correct path setup, assuming you want to handle the user creation at '/signup'
 router.post(
-  '/',
+  '/signup',
   validateRequest(userValidation.createUserValidationSchema),
   userControllers.createUser,
 );

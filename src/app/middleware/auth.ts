@@ -8,6 +8,7 @@ import { TUserRol } from '../modules/user/user.interface';
 const Auth = (...requiredRoles: TUserRol[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
+    
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new AppError(
