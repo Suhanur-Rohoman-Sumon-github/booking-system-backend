@@ -13,11 +13,11 @@ const moduleRoutes = [
     route: UserRoute,
   },
   {
-    path: '/room',
+    path: '/rooms',
     route: RoomRouter,
   },
   {
-    path: '/slot',
+    path: '/slots',
     route: SlotRoute,
   },
   {
