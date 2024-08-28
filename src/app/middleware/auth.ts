@@ -24,31 +24,29 @@ const Auth = (...requiredRoles: TUserRol[]) => {
         'UnAuthorized access detection ',
       );
     }
-    jwt.verify(
-      token,
-      config.access_secret_key as string,
-      function (err, decoded) {
-        if (err) {
-          throw new AppError(
-            httpStatus.UNAUTHORIZED,
-            'UnAuthorized access detected',
-          );
-        }
-
-        if (
-          requiredRoles &&
-          !requiredRoles.includes((decoded as JwtPayload).userRole)
-        ) {
-          return res.status(401).json({
-            success: false,
-            statusCode: 401,
-            message: 'You have no access to this route',
-          });
-        }
-        req.user = decoded as JwtPayload;
-        next();
-      },
-    );
+    let decoded
+    try {
+       decoded = jwt.verify(token, config.JWT_ACCESS_SECRET_KEY as string) as JwtPayload;
+    } catch (err) {
+      throw new AppError( 401,
+        'UnAuthorized access detection ')
+    }
+    if(!decoded){
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        'UnAuthorized access detection ',
+      );
+    }
+    
+    if (!requiredRoles.includes(decoded.role as TUserRol)) {
+      return res.status(401).json({
+        success: false,
+        statusCode: 401,
+        message: 'You have no access to this route',
+      });
+    }
+    req.user = decoded ;
+    next();
   });
 };
 

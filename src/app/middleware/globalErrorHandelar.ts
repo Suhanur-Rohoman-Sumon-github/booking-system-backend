@@ -40,6 +40,7 @@ const handleGlobalError: ErrorRequestHandler = (
       {
         path: '',
         message: err?.message,
+        
       },
     ];
   } else if (err instanceof Error) {
@@ -57,6 +58,7 @@ const handleGlobalError: ErrorRequestHandler = (
     message,
     errorSources,
     stack: config.node_Env === 'development' ? err.stack : '',
+    status : statusCode
   });
 };
 

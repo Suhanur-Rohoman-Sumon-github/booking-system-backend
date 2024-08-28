@@ -3,6 +3,8 @@ import { TRoom } from './room.interface';
 import { roomModel } from './room.model';
 import AppError from '../../error/AppError';
 import httpStatus from 'http-status';
+import QueryBuilder from '../../../builder/queryBuilder';
+import { RoomSearchableFields } from './room.const';
 
 const crateRoomInDb = async (payload: TRoom) => {
   const result = await roomModel.create(payload);
@@ -12,9 +14,16 @@ const getSingleRoomFromDb = async (id: string) => {
   const result = await roomModel.findById(id);
   return result;
 };
-const getAllRoomFromDb = async () => {
-  const result = await roomModel.find();
-  return result;
+const getAllRoomFromDb = async (query: Record<string, unknown>) => {
+  const RoomQuery = new QueryBuilder(roomModel.find(), query)
+    .search(RoomSearchableFields)
+    .filter()
+    .sort()
+    .fields()
+    .paginate();
+    const result = await RoomQuery.modelQuery;
+    const meta = await RoomQuery.countTotal()
+  return {result,meta};
 };
 const updateRoomFromDb = async (id: string, payload: Partial<TRoom>) => {
   const { amenities, ...otherRemainingData } = payload;

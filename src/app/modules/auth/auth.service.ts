@@ -2,8 +2,9 @@ import httpStatus from 'http-status';
 import AppError from '../../error/AppError';
 import { userModel } from '../user/user.model';
 import { TLoginUser } from './auth.interface';
-import jwt from 'jsonwebtoken';
 import config from '../../config';
+import { createToken } from './auth.utils';
+import jwt, { JwtPayload } from 'jsonwebtoken'
 const loginUser = async (payload: TLoginUser) => {
   const isUserExists = await userModel.isUserExistFindByEmail(payload.email);
   if (!isUserExists) {
@@ -27,18 +28,51 @@ const loginUser = async (payload: TLoginUser) => {
 
   const jwtPayload = {
     userId: isUserExists.id,
-    userRole: isUserExists.role,
+    role: isUserExists.role,
   };
 
-  const accessToken = jwt.sign(jwtPayload, config.access_secret_key as string, {
-    expiresIn: '10d',
-  });
+  const accessToken = createToken(jwtPayload,config.JWT_ACCESS_SECRET_KEY as string,config.JWT_ACCESS_TOKEN_EXPIRE_IN as string);
+  const refreshToken = createToken(jwtPayload,config.JWT_REFRESH_SECRET_KEY as string,config.JWT_REFRESH_TOKEN_EXPIRE_IN as string);
 
   return {
     accessToken,
-    isUserExists,
+    refreshToken,
+    user: isUserExists,
   };
+};
+const getRefreshToken = async (token:string) => {
+  
+  if (!token) {
+    throw new AppError(
+      httpStatus.UNAUTHORIZED,
+      'refresh token is required ',
+    );
+  }
+  const decoded = jwt.verify(token, config.JWT_REFRESH_SECRET_KEY as string) as JwtPayload;
+  
+  
+  const {userId,role} = decoded
+  const user = await userModel.find({userId});
+  
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'user not found');
+  }
+
+  const isUserDeleted = await userModel.findOne({ isDeleted: true });
+
+  if (isUserDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'user deleted ');
+  }
+  const jwtPayload = {
+    userId,
+    role
+  };
+  
+  
+  const accessToken = createToken(jwtPayload,config.JWT_ACCESS_SECRET_KEY as string,config.JWT_ACCESS_TOKEN_EXPIRE_IN as string);
+  return {accessToken}
 };
 export const AuthServices = {
   loginUser,
+  getRefreshToken
 };
