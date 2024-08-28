@@ -6,10 +6,14 @@ type TResponse<T> = {
   message?: string;
   token?: string;
   data: T;
+  meta?:{ limit:number
+    page:number
+    total:number
+    totalPage:number}
 };
 
 const sendResponse = <T>(res: Response, responseData: TResponse<T>) => {
-  const { statusCode, success, message, token, data } = responseData;
+  const { statusCode, success, message, token, data ,meta} = responseData;
   const response: Record<string, unknown> = {
     success,
     statusCode,
@@ -19,6 +23,9 @@ const sendResponse = <T>(res: Response, responseData: TResponse<T>) => {
 
   if (token) {
     response.token = token;
+  }
+  if (meta) {
+    response.meta = meta;
   }
 
   res.status(statusCode).json(response);

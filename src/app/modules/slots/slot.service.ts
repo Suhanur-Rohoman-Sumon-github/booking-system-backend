@@ -21,7 +21,7 @@ const createSlotInDb = async (payload: TSlot) => {
 const getAvailableSlotsFromDb = async (date?: string, roomId?: string) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const query: any = { isBooked: false };
-
+ 
   if (date) {
     query.date = date;
   }

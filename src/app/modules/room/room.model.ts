@@ -34,6 +34,8 @@ const roomSchema = new Schema<TRoom>({
     type: Boolean,
     default: false,
   },
+},{
+  timestamps:true
 });
 
 roomSchema.pre('find', async function (next) {

@@ -27,14 +27,16 @@ const getSingleRoom = catchAsync(async (req, res) => {
   });
 });
 const getAllRoom = catchAsync(async (req, res) => {
+  
 
-  const result = await RoomService.getAllRoomFromDb(req.query);
-
+  const results = await RoomService.getAllRoomFromDb(req.query);
+  const {result ,meta} = results
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Rooms retrieved successfully',
     data: result,
+    meta:meta
   });
 });
 const updateRoom = catchAsync(async (req, res) => {

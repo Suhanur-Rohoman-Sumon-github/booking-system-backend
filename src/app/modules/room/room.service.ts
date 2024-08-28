@@ -15,6 +15,7 @@ const getSingleRoomFromDb = async (id: string) => {
   return result;
 };
 const getAllRoomFromDb = async (query: Record<string, unknown>) => {
+  
   const RoomQuery = new QueryBuilder(roomModel.find(), query)
     .search(RoomSearchableFields)
     .filter()
