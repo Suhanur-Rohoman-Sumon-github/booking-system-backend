@@ -13,6 +13,14 @@ const createStudentIntoDB = async (payload: TUser) => {
   const result = userModel.create(newUser);
   return result;
 };
+const getMe = async (userId:string,role:string) => {
+  let result: object | null = {}
+  if(role==='user'){
+    result = await userModel.findOne({id:userId})
+  }
+  
+  return result;
+};
 const createAdminIntoDB = async (payload: TAdmin) => {
   // create a user object
   const userData: Partial<TAdmin> = payload;
@@ -60,4 +68,5 @@ const createAdminIntoDB = async (payload: TAdmin) => {
 export const UserServices = {
   createStudentIntoDB,
   createAdminIntoDB,
+  getMe
 };

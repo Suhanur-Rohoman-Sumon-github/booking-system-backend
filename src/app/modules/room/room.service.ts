@@ -15,16 +15,15 @@ const getSingleRoomFromDb = async (id: string) => {
   return result;
 };
 const getAllRoomFromDb = async (query: Record<string, unknown>) => {
-  
   const RoomQuery = new QueryBuilder(roomModel.find(), query)
     .search(RoomSearchableFields)
     .filter()
     .sort()
     .fields()
     .paginate();
-    const result = await RoomQuery.modelQuery;
-    const meta = await RoomQuery.countTotal()
-  return {result,meta};
+  const result = await RoomQuery.modelQuery;
+  const meta = await RoomQuery.countTotal();
+  return { result, meta };
 };
 const updateRoomFromDb = async (id: string, payload: Partial<TRoom>) => {
   const { amenities, ...otherRemainingData } = payload;

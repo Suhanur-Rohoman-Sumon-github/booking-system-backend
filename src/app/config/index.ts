@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-
 import path from 'path';
 
+// Load environment variables from .env file
 dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 export default {
@@ -14,4 +14,5 @@ export default {
   JWT_REFRESH_SECRET_KEY: process.env.Jwt_Secret_refresh_Key,
   JWT_ACCESS_TOKEN_EXPIRE_IN: process.env.Jwt_Access_expireIn,
   JWT_REFRESH_TOKEN_EXPIRE_IN: process.env.Jwt_refresh_expireIn,
+  STRIPE_SECRET_KEY: process.env.stripe_access_key,
 };

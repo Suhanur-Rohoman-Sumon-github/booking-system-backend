@@ -8,7 +8,6 @@ import { TUserRol } from '../modules/user/user.interface';
 const Auth = (...requiredRoles: TUserRol[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-    
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new AppError(
@@ -24,20 +23,22 @@ const Auth = (...requiredRoles: TUserRol[]) => {
         'UnAuthorized access detection ',
       );
     }
-    let decoded
+    let decoded;
     try {
-       decoded = jwt.verify(token, config.JWT_ACCESS_SECRET_KEY as string) as JwtPayload;
+      decoded = jwt.verify(
+        token,
+        config.JWT_ACCESS_SECRET_KEY as string,
+      ) as JwtPayload;
     } catch (err) {
-      throw new AppError( 401,
-        'UnAuthorized access detection ')
+      throw new AppError(401, 'UnAuthorized access detection ');
     }
-    if(!decoded){
+    if (!decoded) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
         'UnAuthorized access detection ',
       );
     }
-    
+
     if (!requiredRoles.includes(decoded.role as TUserRol)) {
       return res.status(401).json({
         success: false,
@@ -45,7 +46,8 @@ const Auth = (...requiredRoles: TUserRol[]) => {
         message: 'You have no access to this route',
       });
     }
-    req.user = decoded ;
+    
+    req.user = decoded;
     next();
   });
 };

@@ -2,16 +2,26 @@
 import { Model } from 'mongoose';
 import { User_Role } from './user.const';
 
-export interface TUser {
+type TAddress = {
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+};
+
+export type TUser = {
   name: string;
-  id: string;
+  id?: string;
   email: string;
   password: string;
   phone: string;
-  address: string;
+  addresses: TAddress;
+  address: TAddress;
   role: 'admin' | 'user';
   isDeleted: boolean;
-}
+  profileImage:string
+};
 
 export interface UserModels extends Model<TUser> {
   isUserExistFindByEmail(email: string): Promise<TUser | null>;

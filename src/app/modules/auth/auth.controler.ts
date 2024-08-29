@@ -5,11 +5,13 @@ import { AuthServices } from './auth.service';
 import config from '../../config';
 
 const loginUser = catchAsync(async (req, res) => {
-  const { accessToken, user,refreshToken } = await AuthServices.loginUser(req.body);
-  res.cookie('refreshToken',refreshToken,{
-  secure:config.node_Env === 'production',
-  httpOnly:true
-  })
+  const { accessToken, user, refreshToken } = await AuthServices.loginUser(
+    req.body,
+  );
+  res.cookie('refreshToken', refreshToken, {
+    secure: config.node_Env === 'production',
+    httpOnly: true,
+  });
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -20,9 +22,9 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 const getRefreshToken = catchAsync(async (req, res) => {
-  const {refreshToken} = req.cookies
-  
-  const results = await AuthServices.getRefreshToken(refreshToken)
+  const { refreshToken } = req.cookies;
+
+  const results = await AuthServices.getRefreshToken(refreshToken);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -34,5 +36,5 @@ const getRefreshToken = catchAsync(async (req, res) => {
 
 export const AuthControllers = {
   loginUser,
-  getRefreshToken
+  getRefreshToken,
 };
